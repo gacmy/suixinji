@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Suixinji</string>
+    <array name="mainTabTitles">
+        <item>随心笔记</item>
+        <item>往日笔记</item>
+    </array>
+</resources>
