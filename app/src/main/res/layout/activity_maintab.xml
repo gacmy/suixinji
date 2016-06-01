@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     tools:context="com.example.gacmy.suixinji.WelComeActivity">
+    <include layout="@layout/toolbar_main"/>
     <com.example.gacmy.suixinji.myview.indicator.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
