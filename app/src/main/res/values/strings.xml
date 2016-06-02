@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">随心笔记</string>
+    <string name="empty">你还没有写笔记</string>
+    <string name="nonote"></string>
     <array name="mainTabTitles">
         <item>随心笔记</item>
         <item>往日笔记</item>

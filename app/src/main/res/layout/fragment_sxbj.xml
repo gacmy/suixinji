@@ -47,7 +47,7 @@
                         android:background="@drawable/circle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="当前没有笔记"
+                        android:text="@string/nonote"
                         android:textSize="@dimen/textsize"
                         android:textColor="@color/white"
                         />

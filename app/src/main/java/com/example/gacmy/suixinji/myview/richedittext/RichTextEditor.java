@@ -481,7 +481,7 @@ public class RichTextEditor extends ScrollView {
 	public class EditData {
 		public String inputStr;
 		public String imagePath;
-		public Bitmap bitmap;
+		//public Bitmap bitmap;
 		public EditData(){
 
 		}

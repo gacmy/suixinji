@@ -13,11 +13,16 @@ import android.widget.Toast;
 
 import com.example.gacmy.suixinji.R;
 import com.example.gacmy.suixinji.bean.MessageEvent;
+import com.example.gacmy.suixinji.bean.NoteBean;
+import com.example.gacmy.suixinji.dao.NoteDao;
 import com.example.gacmy.suixinji.myview.circleimageview.CircleImageView;
 import com.example.gacmy.suixinji.myview.fabreveallayout.FABRevealLayout;
 import com.example.gacmy.suixinji.myview.fabreveallayout.OnRevealChangeListener;
 import com.example.gacmy.suixinji.myview.richedittext.RichTextEditor;
+import com.example.gacmy.suixinji.myview.toast.GacToast;
 import com.example.gacmy.suixinji.utils.bitmap.BitmapUtils;
+import com.example.gacmy.suixinji.utils.date.DateUtils;
+import com.example.gacmy.suixinji.utils.gson.GsonUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,7 +40,7 @@ public class SXBJFragment extends BaseFragment{
     private FABRevealLayout fabRevealLayout;
     private CircleImageView civ_photo;
     private ImageView iv_back;
-    private TextView tv_notitle;
+    private TextView tv_notitle;//笔记标题 时间
     private CircleImageView civ_takephoto;
     private CircleImageView civ_save;
     private CircleImageView civ_clear;
@@ -80,14 +85,42 @@ public class SXBJFragment extends BaseFragment{
         BitmapUtils.camera(getActivity());
     }
 
+    private void saveNote(){
+        String notetitle = tv_notitle.getText().toString();
+        if(notetitle.equals(getActivity().getString(R.string.nonote))){
+            saveRichText();
+        }else{
+            updateRichText();
+        }
+    }
     //保存富文本
     private void saveRichText(){
-        List<RichTextEditor.EditData> list = richTextEditor.buildEditData();
-        if(list != null){
-            for(int i = 0; i < list.size(); i++){
-                Log.e("gac","inputstr:"+list.get(i).inputStr+" imgepath:"+list.get(i).imagePath);
-            }
+        if(isRichTextEmpty()){
+            GacToast.makeText(getActivity(),getActivity().getString(R.string.empty),GacToast.ERROR).show();
+            return;
         }
+        List<RichTextEditor.EditData> list = richTextEditor.buildEditData();
+        String content = GsonUtils.list2JsonStr(list);
+        NoteBean bean = new NoteBean();
+        bean.setContent(content);
+        bean.setDatetime(DateUtils.getTodayDate());
+        new NoteDao(getActivity()).insertBean(bean);
+    }
+
+    //更新数据库富文本
+    private void updateRichText(){
+        if(isRichTextEmpty()){
+            GacToast.makeText(getActivity(),getActivity().getString(R.string.empty),GacToast.ERROR).show();
+            return;
+        }
+        List<RichTextEditor.EditData> list = richTextEditor.buildEditData();
+        String content = GsonUtils.list2JsonStr(list);
+        NoteBean bean = new NoteBean();
+        bean.setContent(content);
+        bean.setDatetime(DateUtils.getTodayDate());
+        String datetime = tv_notitle.getText().toString();
+        bean.setDatetime(datetime);
+        new NoteDao(getActivity()).updateBean("datetime = ?", new String[]{datetime}, bean);
     }
     @Override
     public void onClick(View v) {
@@ -102,7 +135,7 @@ public class SXBJFragment extends BaseFragment{
                 camera();
                 break;
             case R.id.civ_save:
-               testData();
+                saveNote();
                 break;
             case R.id.civ_clear:
                 richTextEditor.clearAllText();
@@ -114,6 +147,7 @@ public class SXBJFragment extends BaseFragment{
     public void initEvent() {
         configureFABReveal();
         EventBus.getDefault().register(this);
+        setRichTextEditor();
     }
 
     //fab reavel 监听事件 切换界面
@@ -148,7 +182,37 @@ public class SXBJFragment extends BaseFragment{
     }
 
     private void setRichTextEditor(){
+       List<NoteBean> list = new NoteDao(getActivity()).getBeanList("select * from " + NoteDao.TABLE_NAME, null);
+        if(list == null || list.size() == 0){
+            return;
+        }
+        bubbleSort(list);
+        NoteBean maxBean = list.get(list.size() - 1);
+        tv_notitle.setText(maxBean.getDatetime());
+        String content = maxBean.getContent();
+        List<RichTextEditor.EditData> listdata = GsonUtils.jsonStr2List(content);
+        richTextEditor.setRichEditText(listdata);
+    }
 
+    //时间进行冒泡排序
+    public  void bubbleSort(List<NoteBean> list) {
+        NoteBean temp; // 记录临时中间值
+        int size =list.size(); // 数组大小
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = i + 1; j < size; j++) {
+                if (DateUtils.compareDataTime(list.get(i).getDatetime(),list.get(j).getDatetime()) == -1 ) { // 交换两数的位置
+                    temp = list.get(i);
+                    list.get(i).setDatetime(list.get(j).getDatetime());
+                    list.get(i).setContent(list.get(j).getContent());
+                    list.get(i).setId(list.get(j).getId());
+
+                    list.get(j).setDatetime(temp.getDatetime());
+                    list.get(j).setId(temp.getId());
+                    list.get(j).setContent(temp.getContent());
+
+                }
+            }
+        }
     }
     //revellayout 返回主界面
     private void backMainView(){
