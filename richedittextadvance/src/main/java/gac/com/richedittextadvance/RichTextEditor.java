@@ -1,11 +1,9 @@
-package com.example.gacmy.suixinji.myview.richedittext;
-
-import java.util.ArrayList;
-import java.util.List;
+package gac.com.richedittextadvance;
 
 import android.animation.LayoutTransition;
 import android.animation.LayoutTransition.TransitionListener;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,8 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import com.example.gacmy.suixinji.R;
-import com.example.gacmy.suixinji.utils.ActivityUtils;
+//import com.example.gacmy.suixinji.utils.ActivityUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 这是一个富文本编辑器，给外部提供insertImage接口，添加的图片跟当前光标所在位置有关
@@ -36,18 +36,18 @@ import com.example.gacmy.suixinji.utils.ActivityUtils;
 public class RichTextEditor extends ScrollView {
 	private static final int EDIT_PADDING = 10; // edittext常规padding是10dp
 	private static final int EDIT_FIRST_PADDING_TOP = 10; // 第一个EditText的paddingTop值
-
-	private int viewTagIndex = 1; // 新生的view都会打一个tag，对每个view来说，这个tag是唯一的。
+	private int viewTagIndex = 0; // 新生的view都会打一个tag，对每个view来说，这个tag是唯一的。
 	private LinearLayout allLayout; // 这个是所有子view的容器，scrollView内部的唯一一个ViewGroup
 	private LayoutInflater inflater;
 	private OnKeyListener keyListener; // 所有EditText的软键盘监听器
 	private OnClickListener btnListener; // 图片右上角红叉按钮监听器
 	private OnFocusChangeListener focusListener; // 所有EditText的焦点监听listener
-	private EditText lastFocusEdit; // 最近被聚焦的EditText
+	private LineEditText lastFocusEdit; // 最近被聚焦的EditText
 	private LayoutTransition mTransitioner; // 只在图片View添加或remove时，触发transition动画
 	private int editNormalPadding = 0; //
 	private int disappearingImageIndex = 0;
 	private Context context;
+	private List<LineEditText> list_et;
 	public RichTextEditor(Context context) {
 		this(context, null);
 	}
@@ -60,6 +60,7 @@ public class RichTextEditor extends ScrollView {
 		super(context, attrs, defStyleAttr);
 		inflater = LayoutInflater.from(context);
 		this.context = context;
+		list_et = new ArrayList<>();
 		// 1. 初始化allLayout
 		allLayout = new LinearLayout(context);
 		allLayout.setOrientation(LinearLayout.VERTICAL);
@@ -75,10 +76,32 @@ public class RichTextEditor extends ScrollView {
 
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				Log.e("gac","onKey");
 				if (event.getAction() == KeyEvent.ACTION_DOWN
 						&& event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
-					EditText edit = (EditText) v;
+					Log.e("gac","onKey del");
+					LineEditText edit = (LineEditText) v;
 					onBackspacePress(edit);
+					return false;
+				}
+				if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+					Log.e("gac","onKey enter");
+					LineEditText editText = (LineEditText)v;
+					int index = (int)editText.getTag();
+					Log.e("gac","index:"+index);
+					Log.e("gac","viewTagIndex:"+viewTagIndex);
+					if(index == 0){
+						setEnableEditText(list_et.get(1));
+						return true;
+					}
+					if(index < viewTagIndex-1){
+						setEnableEditText(list_et.get(index + 1));
+					}else{
+						Log.e("gac","create text");
+						lastFocusEdit = createLineEditText("", true);
+						setEnableEditText(list_et.get(index+1));
+					}
+					return true;
 				}
 				return false;
 			}
@@ -99,13 +122,64 @@ public class RichTextEditor extends ScrollView {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
-					lastFocusEdit = (EditText) v;
+					lastFocusEdit = (LineEditText) v;
 				}
 			}
 		};
+		initRichEditText(context);
+		//createFirstEditText();
 
-		createFirstEditText();
+	}
 
+	private void setEnableEditText(EditText et){
+		et.setEnabled(true);
+		et.clearFocus();
+		et.requestFocus();
+	}
+	private void initRichEditText(Context context){
+		int srceentHeight = ActivityUtils.getScreenHeight(context);
+		Log.e("gac","screentHeight:"+srceentHeight);
+		//editNormalPadding = dip2px(EDIT_PADDING);
+		createTitleEditText();
+		lastFocusEdit = createLineEditText("请输入正文", true);
+		for(int i = 0; i < 10; i++){
+			createLineEditText("",false);
+		}
+
+		//lastFocusEdit = firstEdit;
+	}
+
+	private void createTitleEditText(){
+		LineEditText editText = (LineEditText) inflater.inflate(R.layout.edit_item1,
+				null);
+		editText.setOnKeyListener(keyListener);
+		editText.setTag(viewTagIndex++);
+		editText.setPadding(editNormalPadding, dip2px(EDIT_FIRST_PADDING_TOP), editNormalPadding, 0);
+		editText.setHint("请输入标题");
+		editText.setTextSize(18);
+		editText.getPaint().setFakeBoldText(true);//设置粗体
+		editText.setEnabled(true);
+		editText.setOnFocusChangeListener(focusListener);
+		list_et.add(editText);
+		LinearLayout.LayoutParams firstEditParam = new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		allLayout.addView(editText, firstEditParam);
+	}
+	private LineEditText createLineEditText(String hint,boolean enable) {
+		LineEditText editText = (LineEditText) inflater.inflate(R.layout.edit_item1,
+				null);
+		editText.setOnKeyListener(keyListener);
+		editText.setTag(viewTagIndex++);
+
+		editText.setPadding(editNormalPadding, dip2px(EDIT_FIRST_PADDING_TOP), editNormalPadding, 0);
+		editText.setHint(hint);
+		editText.setEnabled(enable);
+		editText.setOnFocusChangeListener(focusListener);
+		list_et.add(editText);
+		LinearLayout.LayoutParams firstEditParam = new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		allLayout.addView(editText, firstEditParam);
+		return editText;
 	}
 	private void createFirstEditText(){
 		LinearLayout.LayoutParams firstEditParam = new LinearLayout.LayoutParams(
@@ -114,7 +188,7 @@ public class RichTextEditor extends ScrollView {
 		EditText firstEdit = createEditText("input here",
 				dip2px(EDIT_FIRST_PADDING_TOP));
 		allLayout.addView(firstEdit, firstEditParam);
-		lastFocusEdit = firstEdit;
+		//lastFocusEdit = firstEdit;
 	}
 	//清空所有内容
 	public void clearAllText(){
@@ -157,7 +231,7 @@ public class RichTextEditor extends ScrollView {
 	 * @param editTxt
 	 *            光标所在的文本输入框
 	 */
-	private void onBackspacePress(EditText editTxt) {
+	private void onBackspacePress(LineEditText editTxt) {
 		int startSelection = editTxt.getSelectionStart();
 		// 只有在光标已经顶到文本输入框的最前方，在判定是否删除之前的图片，或两个View合并
 		if (startSelection == 0) {
@@ -170,20 +244,8 @@ public class RichTextEditor extends ScrollView {
 					onImageCloseClick(preView);
 				} else if (preView instanceof EditText) {
 					// 光标EditText的上一个view对应的还是文本框EditText
-					String str1 = editTxt.getText().toString();
-					EditText preEdit = (EditText) preView;
-					String str2 = preEdit.getText().toString();
+					setEnableEditText((LineEditText)preView);
 
-					// 合并文本view时，不需要transition动画
-					allLayout.setLayoutTransition(null);
-					allLayout.removeView(editTxt);
-					allLayout.setLayoutTransition(mTransitioner); // 恢复transition动画
-
-					// 文本合并
-					preEdit.setText(str2 + str1);
-					preEdit.requestFocus();
-					preEdit.setSelection(str2.length(), str2.length());
-					lastFocusEdit = preEdit;
 				}
 			}
 		}
@@ -240,10 +302,10 @@ public class RichTextEditor extends ScrollView {
 		Bitmap bmp = getScaledBitmap(imagePath, getWidth());
 		if(bmp == null){
 
-			Log.e("gac","bmp is null");
+			//Log.e("gac","bmp is null");
 			return;
 		}else{
-			Log.e("gac","bmp is not null");
+			//Log.e("gac","bmp is not null");
 		}
 		insertImage(bmp, imagePath);
 	}
@@ -270,24 +332,34 @@ public class RichTextEditor extends ScrollView {
 	private void insertImage(Bitmap bitmap, String imagePath) {
 		String lastEditStr = lastFocusEdit.getText().toString();
 		int cursorIndex = lastFocusEdit.getSelectionStart();
-		String editStr1 = lastEditStr.substring(0, cursorIndex).trim();
-		int lastEditIndex = allLayout.indexOfChild(lastFocusEdit);
 
+		String editStr1 = lastEditStr.substring(0, cursorIndex).trim();
+		int lastEditIndex = allLayout.indexOfChild(lastFocusEdit);//图片插入的位置
+		int foucseditindex = (int)lastFocusEdit.getTag();//EditText list集合中的位置
+		Log.e("gac","lastEditIndex:"+foucseditindex);
 		if (lastEditStr.length() == 0 || editStr1.length() == 0) {
-			// 如果EditText为空，或者光标已经顶在了editText的最前面，则直接插入图片，并且EditText下移即可
-			addImageViewAtIndex(lastEditIndex, bitmap, imagePath);
-		} else {
-			// 如果EditText非空且光标不在最顶端，则需要添加新的imageView和EditText
-			lastFocusEdit.setText(editStr1);
-			String editStr2 = lastEditStr.substring(cursorIndex).trim();
-			if (allLayout.getChildCount() - 1 == lastEditIndex
-					|| editStr2.length() > 0) {
-				addEditTextAtIndex(lastEditIndex + 1, editStr2);
+			if(lastEditIndex == 0){
+				//防止标题栏上面插入图片
+				lastEditIndex = 1;
+				setEnableEditText(list_et.get(1));
+				addImageViewAtIndex(lastEditIndex, bitmap, imagePath,1);
+			}else{
+				// 如果EditText为空，或者光标已经顶在了editText的最前面，则直接插入图片，并且EditText下移即可
+				addImageViewAtIndex(lastEditIndex, bitmap, imagePath,foucseditindex);
 			}
 
-			addImageViewAtIndex(lastEditIndex + 1, bitmap, imagePath);
-			lastFocusEdit.requestFocus();
-			lastFocusEdit.setSelection(editStr1.length(), editStr1.length());
+		} else {
+			//edittext有内容的时候 则在下面添加图片
+			// 当前editext是否是最后一个edittext 是则创建新的edittext 在
+			if (allLayout.getChildCount() - 1 == lastEditIndex) {
+				setEnableEditText(createLineEditText("", true));
+				addImageViewAtIndex(lastEditIndex + 1, bitmap, imagePath,foucseditindex+1);
+			} else {
+				addImageViewAtIndex(lastEditIndex + 1, bitmap, imagePath,foucseditindex+1);
+			}
+
+//			lastFocusEdit.requestFocus();
+//			lastFocusEdit.setSelection(editStr1.length(), editStr1.length());
 		}
 		hideKeyBoard();
 	}
@@ -324,7 +396,7 @@ public class RichTextEditor extends ScrollView {
 				.getDimensionPixelSize(R.dimen.edit_padding_top));
 
 		editText2.setText(editStr);
-		lastFocusEdit = editText2;
+		//lastFocusEdit = editText2;
 		// 请注意此处，EditText添加、或删除不触动Transition动画
 		allLayout.setLayoutTransition(null);
 		allLayout.addView(editText2, index);
@@ -352,7 +424,7 @@ public class RichTextEditor extends ScrollView {
 	 * 在特定位置添加ImageView
 	 */
 	private void addImageViewAtIndex(final int index, Bitmap bmp,
-			String imagePath) {
+			String imagePath,int foucsindex) {
 		final RelativeLayout imageLayout = createImageLayout();
 		DataImageView imageView = (DataImageView) imageLayout
 				.findViewById(R.id.edit_imageView);
@@ -365,7 +437,7 @@ public class RichTextEditor extends ScrollView {
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, imageHeight);
 		imageView.setLayoutParams(lp);
-
+		setEnableEditText(list_et.get(foucsindex));
 		// onActivityResult无法触发动画，此处post处理
 		allLayout.postDelayed(new Runnable() {
 			@Override
@@ -419,34 +491,7 @@ public class RichTextEditor extends ScrollView {
 		mTransitioner.setDuration(300);
 	}
 
-	/**
-	 * 图片删除的时候，如果上下方都是EditText，则合并处理
-	 */
-	private void mergeEditText() {
-		View preView = allLayout.getChildAt(disappearingImageIndex - 1);
-		View nextView = allLayout.getChildAt(disappearingImageIndex);
-		if (preView != null && preView instanceof EditText && null != nextView
-				&& nextView instanceof EditText) {
-			Log.d("LeiTest", "合并EditText");
-			EditText preEdit = (EditText) preView;
-			EditText nextEdit = (EditText) nextView;
-			String str1 = preEdit.getText().toString();
-			String str2 = nextEdit.getText().toString();
-			String mergeText = "";
-			if (str2.length() > 0) {
-				mergeText = str1 + "\n" + str2;
-			} else {
-				mergeText = str1;
-			}
 
-			allLayout.setLayoutTransition(null);
-			allLayout.removeView(nextEdit);
-			preEdit.setText(mergeText);
-			preEdit.requestFocus();
-			preEdit.setSelection(str1.length(), str1.length());
-			allLayout.setLayoutTransition(mTransitioner);
-		}
-	}
 
 	/**
 	 * dp和pixel转换
@@ -483,6 +528,7 @@ public class RichTextEditor extends ScrollView {
 
 		return dataList;
 	}
+
 
 	public class EditData {
 		public String inputStr;

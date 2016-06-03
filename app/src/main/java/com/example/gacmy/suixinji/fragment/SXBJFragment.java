@@ -44,7 +44,7 @@ public class SXBJFragment extends BaseFragment{
     private CircleImageView civ_takephoto;
     private CircleImageView civ_save;
     private CircleImageView civ_clear;
-
+    private boolean init = true;
     @Override
     public View getView(LayoutInflater inflater,ViewGroup container) {
         return inflater.inflate(R.layout.fragment_sxbj,container,false);
@@ -61,6 +61,27 @@ public class SXBJFragment extends BaseFragment{
         civ_clear = mGetViewSetOnClick(R.id.civ_clear,view);
         civ_takephoto = mGetViewSetOnClick(R.id.civ_takephoto,view);
     }
+
+    //viewpager 里的fragment 可见时候用这个方法
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            if(init){
+                Log.e("gac", "fragment:is visible");
+                setRichTextEditor();//在Fragment可见的时候设置 内容
+                init = false;
+            }
+
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     private void testData(){
         List<RichTextEditor.EditData> list = new ArrayList<>();
         RichTextEditor.EditData e1 = richTextEditor. new EditData("...",null);
@@ -86,6 +107,7 @@ public class SXBJFragment extends BaseFragment{
     }
 
     private void saveNote(){
+        Log.e("gac", "**********saveNote***************");
         String notetitle = tv_notitle.getText().toString();
         if(notetitle.equals(getActivity().getString(R.string.nonote))){
             saveRichText();
@@ -103,7 +125,9 @@ public class SXBJFragment extends BaseFragment{
         String content = GsonUtils.list2JsonStr(list);
         NoteBean bean = new NoteBean();
         bean.setContent(content);
-        bean.setDatetime(DateUtils.getTodayDate());
+        String datetime = DateUtils.getTodayDate();
+        bean.setDatetime(datetime);
+        tv_notitle.setText(datetime);
         new NoteDao(getActivity()).insertBean(bean);
     }
 
@@ -138,16 +162,20 @@ public class SXBJFragment extends BaseFragment{
                 saveNote();
                 break;
             case R.id.civ_clear:
-                richTextEditor.clearAllText();
+                clearRichText();
                 break;
         }
     }
 
+    private void clearRichText(){
+        richTextEditor.clearAllText();
+        tv_notitle.setText(getString(R.string.nonote));
+    }
     @Override
     public void initEvent() {
         configureFABReveal();
         EventBus.getDefault().register(this);
-        setRichTextEditor();
+
     }
 
     //fab reavel 监听事件 切换界面
@@ -173,7 +201,7 @@ public class SXBJFragment extends BaseFragment{
 
     @Subscribe
     public void onEventMainThread(MessageEvent event) {
-        String msg =  event.getMsg();
+        String msg = event.getMsg();
         Log.e("gac", msg);
         if(!TextUtils.isEmpty(msg)){
             richTextEditor.insertImage(msg);
@@ -190,6 +218,7 @@ public class SXBJFragment extends BaseFragment{
         NoteBean maxBean = list.get(list.size() - 1);
         tv_notitle.setText(maxBean.getDatetime());
         String content = maxBean.getContent();
+        Log.e("gac","content:"+content);
         List<RichTextEditor.EditData> listdata = GsonUtils.jsonStr2List(content);
         richTextEditor.setRichEditText(listdata);
     }
@@ -226,16 +255,22 @@ public class SXBJFragment extends BaseFragment{
     }
 
     private boolean isRichTextEmpty(){
+        boolean flag = false;
         List<RichTextEditor.EditData> list = richTextEditor.buildEditData();
         if(list == null || list.size() == 0){
-            return true;
+            flag = true;
         }
         for(int i = 0; i < list.size(); i++){
-            if(TextUtils.isEmpty(list.get(i).inputStr) || !TextUtils.isEmpty(list.get(i).imagePath)){
-                return false;
+            if((list.get(i).inputStr !=null && !TextUtils.isEmpty(list.get(i).inputStr.trim())
+            || !TextUtils.isEmpty(list.get(i).imagePath))){
+                flag = false;
+                break;
+            }else{
+                flag = true;
             }
         }
-        return true;
+        Log.e("gac","rich text empty:"+flag);
+        return flag;
     }
 
     private void showSecondaryViewItems() {

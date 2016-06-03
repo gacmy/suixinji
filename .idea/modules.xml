@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/richedittextadvance/richedittextadvance.iml" filepath="$PROJECT_DIR$/richedittextadvance/richedittextadvance.iml" />
       <module fileurl="file://$PROJECT_DIR$/suixinji.iml" filepath="$PROJECT_DIR$/suixinji.iml" />
     </modules>
   </component>

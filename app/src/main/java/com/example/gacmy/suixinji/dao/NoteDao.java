@@ -102,14 +102,14 @@ public class NoteDao {
 
     //查询
     public List<NoteBean>  getBeanList(String sql,String[] whereArgs){
-        Log.e("gac","!!!!!!!!!!!!!!!");
+        //Log.e("gac","!!!!!!!!!!!!!!!");
         SQLiteDatabase db = helper.getWritableDatabase();
-        Log.e("gac","getBeanList");
+        //Log.e("gac","getBeanList");
         Cursor cursor = db.rawQuery(sql, whereArgs);
-        Log.e("gac","************");
+        //Log.e("gac","************");
         List<NoteBean> mList = null;
         if(cursor != null){
-            Log.e("gac","cursor is not null");
+           // Log.e("gac","cursor is not null");
             mList = new ArrayList<>();
             while (cursor.moveToNext()){
                 mList.add(getUserBeanByCursor(cursor));
@@ -129,7 +129,7 @@ public class NoteDao {
                 String mName = method.getName();
                 if (mName.startsWith("get") && !mName.startsWith("getClass")) {
                     String filedName = mName.substring(3, mName.length()).toLowerCase();
-                    Log.e("gac", "fieldName:" + filedName);
+                    //Log.e("gac", "fieldName:" + filedName);
                     if(filedName.equals("id")){
                         //id 让它自动增加
                         continue;
@@ -156,7 +156,7 @@ public class NoteDao {
             for(int i = 0; i < str_column.length; i++){
                 if(field.getName().equals(str_column[i])){
                     try {
-                        field.set(str_column[i], cursor.getString(cursor.getColumnIndex(str_column[i])));
+                        field.set(bean, cursor.getString(cursor.getColumnIndex(str_column[i])));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
@@ -165,7 +165,7 @@ public class NoteDao {
             for(int i = 0; i < int_cloumn.length; i++){
                 if(field.getName().equals(int_cloumn[i])){
                     try {
-                        field.set(int_cloumn[i], cursor.getInt(cursor.getColumnIndex(int_cloumn[i])));
+                        field.set(bean, cursor.getInt(cursor.getColumnIndex(int_cloumn[i])));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }

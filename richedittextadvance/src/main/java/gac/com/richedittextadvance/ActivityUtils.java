@@ -1,4 +1,4 @@
-package com.example.gacmy.suixinji.utils;
+package gac.com.richedittextadvance;
 
 import android.content.Context;
 import android.view.WindowManager;
@@ -21,5 +21,12 @@ public class ActivityUtils {
         int width = wm.getDefaultDisplay().getWidth();
         //int height = wm.getDefaultDisplay().getHeight();
         return width;
+    }
+    public static int getScreenHeight(Context context){
+        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+
+        //int width = wm.getDefaultDisplay().getWidth();
+        int height = wm.getDefaultDisplay().getHeight();
+        return height;
     }
 }
