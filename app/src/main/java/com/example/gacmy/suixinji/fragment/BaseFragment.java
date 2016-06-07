@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.gacmy.suixinji.myview.toast.GacToast;
+
 /**
  * Created by Administrator on 2016/6/1.
  */
@@ -34,5 +36,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         T view = (T) v.findViewById(id);
         view.setOnClickListener(this);
         return (T)view;
+    }
+
+    protected void toast(String content){
+        GacToast.makeText(getActivity(),content).show();
     }
 }

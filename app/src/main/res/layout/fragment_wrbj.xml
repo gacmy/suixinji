@@ -9,6 +9,12 @@
         android:layout_height="wrap_content">
 
     </com.example.gacmy.suixinji.myview.CalendarSwitchView>
+    <com.example.gacmy.suixinji.myview.calendarview.MaterialCalendarView
+        android:id="@+id/calendarview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.example.gacmy.suixinji.myview.calendarview.MaterialCalendarView>
     <Button
         android:id="@+id/btn"
         android:layout_width="wrap_content"

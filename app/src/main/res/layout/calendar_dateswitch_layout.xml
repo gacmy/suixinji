@@ -20,10 +20,16 @@
             android:text="2"
             />
     </ViewFlipper>
+
+    <ViewFlipper
+        android:id="@+id/flipper_year2"
+        android:layout_toRightOf="@+id/flipper_year1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/year2"
             android:padding="@dimen/padding5"
-            android:layout_toRightOf="@+id/flipper_year1"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -31,29 +37,45 @@
             android:textSize="20sp"
             android:text="0"
             />
-        <TextView
-            android:id="@+id/year3"
-            android:padding="@dimen/padding5"
-            android:layout_toRightOf="@id/year2"
+
+    </ViewFlipper>
+        <ViewFlipper
+            android:id="@+id/flipper_year3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="1"
-            />
-        <TextView
-            android:id="@+id/year4"
-            android:padding="@dimen/padding5"
-            android:layout_toRightOf="@id/year3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="6"
-            />
+            android:layout_toRightOf="@id/flipper_year2"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/year3"
+                android:padding="@dimen/padding5"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="1"
+                />
+        </ViewFlipper>
+       <ViewFlipper
+           android:id="@+id/flipper_year4"
+           android:layout_toRightOf="@id/flipper_year3"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+           <TextView
+               android:id="@+id/year4"
+               android:padding="@dimen/padding5"
+
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="20sp"
+               android:textStyle="bold"
+               android:text="6"
+               />
+
+       </ViewFlipper>
+
     <TextView
         android:id="@+id/comma1"
-        android:layout_toRightOf="@id/year4"
+        android:layout_toRightOf="@id/flipper_year4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -65,34 +87,48 @@
         android:paddingBottom="0dp"
         android:text=","
         />
-    <TextView
-        android:id="@+id/month1"
-        android:padding="@dimen/padding5"
+    <ViewFlipper
+        android:id="@+id/flipper_month1"
         android:layout_toRightOf="@id/comma1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="1"
-        />
-    <TextView
-        android:id="@+id/month2"
-        android:padding="@dimen/padding5"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/month1"
+            android:padding="@dimen/padding5"
 
-        android:layout_toRightOf="@id/month1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="0"
-        />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="1"
+            />
+
+    </ViewFlipper>
+   <ViewFlipper
+       android:id="@+id/flipper_month2"
+       android:layout_toRightOf="@id/flipper_month1"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content">
+       <TextView
+           android:id="@+id/month2"
+           android:padding="@dimen/padding5"
+
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:textStyle="bold"
+           android:text="0"
+           />
+
+   </ViewFlipper>
+
     <TextView
         android:id="@+id/comma2"
         android:paddingLeft="@dimen/padding5"
         android:paddingRight="@dimen/padding5"
         android:paddingBottom="0dp"
         android:paddingTop="10dp"
-        android:layout_toRightOf="@id/month2"
+        android:layout_toRightOf="@id/flipper_month2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -100,25 +136,40 @@
         android:textStyle="bold"
         android:text=","
         />
-    <TextView
-        android:id="@+id/day1"
-        android:padding="@dimen/padding5"
+    <ViewFlipper
+        android:id="@+id/flipper_day1"
         android:layout_toRightOf="@id/comma2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="0"
-        />
-    <TextView
-        android:id="@+id/day2"
-        android:padding="@dimen/padding5"
-        android:layout_toRightOf="@id/day1"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/day1"
+            android:padding="@dimen/padding5"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="0"
+            />
+
+    </ViewFlipper>
+    <ViewFlipper
+        android:id="@+id/flipper_day2"
+        android:layout_toRightOf="@id/flipper_day1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="4"
-        />
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/day2"
+            android:padding="@dimen/padding5"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="4"
+            />
+
+    </ViewFlipper>
+
 
 </RelativeLayout>
