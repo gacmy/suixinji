@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     tools:context="com.example.gacmy.suixinji.WelComeActivity">
@@ -11,6 +12,11 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:pstsTabTextColor="@color/green"
+        app:pstsTabBackground="@color/green"
+        app:pstsDividerColor="@color/green"
+        app:pstsUnderlineColor="@color/white"
+
         ></com.example.gacmy.suixinji.myview.indicator.PagerSlidingTabStrip>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

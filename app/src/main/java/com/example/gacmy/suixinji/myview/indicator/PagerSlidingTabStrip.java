@@ -495,6 +495,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     private void unSelect(View tab) {
         if (tab != null) {
             TextView tab_title = (TextView) tab.findViewById(R.id.psts_tab_title);
+            tab_title.setTextColor(Color.WHITE);
             if (tab_title != null) {
                 tab_title.setSelected(false);
             }
@@ -505,6 +506,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     private void select(View tab) {
         if (tab != null) {
             TextView tab_title = (TextView) tab.findViewById(R.id.psts_tab_title);
+            tab_title.setTextColor(Color.GREEN);
             if (tab_title != null) {
                 tab_title.setSelected(true);
             }

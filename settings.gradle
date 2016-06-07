@@ -1,1 +1,1 @@
-include ':app', ':richedittextadvance'
+include ':app', ':richedittextadvance', ':recorder'

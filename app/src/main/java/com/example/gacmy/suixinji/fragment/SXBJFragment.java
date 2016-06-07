@@ -20,6 +20,7 @@ import com.example.gacmy.suixinji.myview.fabreveallayout.FABRevealLayout;
 import com.example.gacmy.suixinji.myview.fabreveallayout.OnRevealChangeListener;
 import com.example.gacmy.suixinji.myview.richedittext.RichTextEditor;
 import com.example.gacmy.suixinji.myview.toast.GacToast;
+import com.example.gacmy.suixinji.utils.AppCompact;
 import com.example.gacmy.suixinji.utils.bitmap.BitmapUtils;
 import com.example.gacmy.suixinji.utils.date.DateUtils;
 import com.example.gacmy.suixinji.utils.gson.GsonUtils;
@@ -38,12 +39,12 @@ import java.util.List;
 public class SXBJFragment extends BaseFragment{
    private RichTextEditor richTextEditor;
     private FABRevealLayout fabRevealLayout;
-    private CircleImageView civ_photo;
+    private ImageView civ_photo;
     private ImageView iv_back;
     private TextView tv_notitle;//笔记标题 时间
-    private CircleImageView civ_takephoto;
-    private CircleImageView civ_save;
-    private CircleImageView civ_clear;
+    private ImageView civ_takephoto;
+    private ImageView civ_save;
+    private ImageView civ_clear;
     private boolean init = true;
     @Override
     public View getView(LayoutInflater inflater,ViewGroup container) {
@@ -54,14 +55,22 @@ public class SXBJFragment extends BaseFragment{
     public void initView(View view) {
         richTextEditor =mGetView(R.id.richet,view);
         fabRevealLayout = mGetView(R.id.fabreveallayout,view);
-        tv_notitle = mGetView(R.id.tv_notetitle,view);
-        civ_photo = mGetViewSetOnClick(R.id.civ_photo,view);
+        tv_notitle = mGetView(R.id.tv_notetitle, view);
+        civ_photo = mGetViewSetOnClick(R.id.civ_photo, view);
+        setTint(civ_photo,R.drawable.ic_photo_white_24dp);
         iv_back = mGetViewSetOnClick(R.id.iv_back,view);
+        setTint(iv_back,R.drawable.ic_exit_to_app_white_24dp);
         civ_save = mGetViewSetOnClick(R.id.civ_save,view);
+        setTint(civ_save,R.drawable.ic_note_add_white_24dp);
         civ_clear = mGetViewSetOnClick(R.id.civ_clear,view);
+        setTint(civ_clear,R.drawable.ic_delete_white_24dp);
         civ_takephoto = mGetViewSetOnClick(R.id.civ_takephoto,view);
+        setTint(civ_takephoto,R.drawable.ic_camera_white_24dp);
     }
 
+    private void setTint(ImageView iv,int resId){
+        AppCompact.setTint(getActivity(),iv,resId,R.color.colorPrimary,R.color.white);
+    }
     //viewpager 里的fragment 可见时候用这个方法
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

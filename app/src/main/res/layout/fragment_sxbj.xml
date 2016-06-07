@@ -16,20 +16,19 @@
         </com.example.gacmy.suixinji.myview.richedittext.RichTextEditor>
         <com.example.gacmy.suixinji.myview.fabreveallayout.FABRevealLayout
             android:layout_below="@+id/richet"
-
             android:id="@+id/fabreveallayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@color/green"
             >
             <android.support.design.widget.FloatingActionButton
                 android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_tool"
+                android:src="@drawable/ic_list_white_24dp"
                 android:scaleType="fitCenter"
-                android:background="@color/colorAccent"
+                android:background="@android:color/darker_gray"
                 />
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -42,32 +41,28 @@
                   >
                     <TextView
                         android:layout_gravity="center"
-                        android:padding="2dp"
+                        android:padding="5dp"
                         android:id="@+id/tv_notetitle"
                         android:background="@drawable/circle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/nonote"
                         android:textSize="@dimen/textsize"
-                        android:textColor="@color/white"
+                        android:textColor="@color/green"
                         />
-                    <com.example.gacmy.suixinji.myview.circleimageview.CircleImageView
+                    <ImageView
+                        android:layout_marginLeft="@dimen/margin20"
                         android:id="@+id/civ_save"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:civ_border_color="@color/black"
-                        android:layout_marginRight="10dp"
-                        app:civ_border_width="2dp"
-                        android:src="@drawable/ic_save"
+                        android:src="@drawable/ic_note_add_white_24dp"
                         />
-                    <com.example.gacmy.suixinji.myview.circleimageview.CircleImageView
+                    <ImageView
                         android:id="@+id/civ_clear"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginRight="10dp"
-                        app:civ_border_color="@color/black"
-                        app:civ_border_width="2dp"
-                        android:src="@drawable/ic_clear"
+                        android:layout_marginLeft="@dimen/margin20"
+                        android:src="@drawable/ic_delete_white_24dp"
                         />
                 </LinearLayout>
 
@@ -82,25 +77,21 @@
                     android:layout_height="wrap_content"
 
                    >
-                    <com.example.gacmy.suixinji.myview.circleimageview.CircleImageView
+                    <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/civ_photo"
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
-                        app:civ_border_color="@color/black"
-                        app:civ_border_width="2dp"
-                        android:src="@drawable/ic_photo"
+
+                        android:src="@drawable/ic_photo_white_24dp"
                         />
-                    <com.example.gacmy.suixinji.myview.circleimageview.CircleImageView
+                    <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/civ_takephoto"
                         android:layout_centerVertical="true"
                         android:layout_centerInParent="true"
-                        app:civ_border_color="@color/black"
-                        app:civ_border_width="2dp"
-                        android:src="@drawable/ic_takephoto"
                         />
                     <ImageView
                         android:layout_alignParentRight="true"
@@ -110,7 +101,7 @@
                         android:id="@+id/iv_back"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_back"
+                        android:src="@drawable/ic_exit_to_app_white_24dp"
                         />
                 </RelativeLayout>
 

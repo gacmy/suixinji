@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/maintoolbar"
     app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-    android:background="@color/colorAccent"
+    android:background="@color/green"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?attr/actionBarSize" >
@@ -14,5 +14,6 @@
         android:gravity="center"
         android:text="@string/app_name"
         android:textSize="@dimen/titlesize"
+        android:textColor="@color/darker_gray"
         />
 </android.support.v7.widget.Toolbar>
