@@ -1,11 +1,8 @@
 package com.example.gacmy.suixinji.fragment;
-
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import com.example.gacmy.suixinji.R;
 import com.example.gacmy.suixinji.myview.CalendarSwitchView;
 import com.example.gacmy.suixinji.myview.calendarview.CalendarDay;
@@ -38,7 +35,7 @@ public class WRBJFragment extends BaseFragment implements
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn:
-                calendarSwitchView.setTextYear1();
+
                 break;
         }
     }

@@ -238,9 +238,5 @@ public class CalendarSwitchView extends FrameLayout {
             AnimationFactory.flipTransition(viewAnimator, AnimationFactory.FlipDirection.TOP_BOTTOM);
         }
     }
-    public void setTextYear1(){
-        tv_year1.setText("3");
-        AnimationFactory.flipTransition(va_year1, AnimationFactory.FlipDirection.TOP_BOTTOM);
 
-    }
 }
