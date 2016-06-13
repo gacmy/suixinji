@@ -23,7 +23,7 @@ public class TextSpan implements LineBackgroundSpan {
         this.color = Color.RED;
         this.mText = "正常";
     }
-    public TextSpan(String mode){
+    public TextSpan(String mode,boolean seleted){
         this.mode = mode;
         if(this.mode.equals(EXCEPTION)){
             this.color = Color.parseColor("#fe8604") ;
@@ -31,6 +31,9 @@ public class TextSpan implements LineBackgroundSpan {
         }else if(this.mode.equals(NORMAL)){
             this.color = Color.BLACK;
             this.mText = "考勤";
+        }
+        if(seleted){
+            this.color= Color.WHITE;
         }
     }
     @Override

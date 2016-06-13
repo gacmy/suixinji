@@ -15,6 +15,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -82,6 +83,11 @@ public class DayView extends CheckedTextView {
     //设置选择单天时候的背景颜色
     public void setSelectionColor(int color){
         this.selectionColor = color;
+        setTextColor(Color.WHITE);
+//        String label = getLabel();
+//        SpannableString formattedLabel = new SpannableString(getLabel());
+//        formattedLabel.setSpan(new TextSpan(daymode,true), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        setText(formattedLabel);
         regenerateBackground();
     }
 
@@ -100,10 +106,12 @@ public class DayView extends CheckedTextView {
         regenerateBackground();
     }
 
+    private SpannableString formattedLabel;
+    private String daymode;
     void applyFacadeGAC(String mode,boolean visible){
       //  Log.e("gac", "DayView: applyFacadeGAC");
         //this.isDecoratedDisabled = facade.areDaysDisabled();
-
+        daymode = mode;
         setTodayColor();
         if(!visible){
             setTextColor(getResources().getColor(R.color.calendartextcor0));
@@ -115,9 +123,10 @@ public class DayView extends CheckedTextView {
         }
         if(mode.equals("0")  || mode.equals("1")){
             String label = getLabel();
-            SpannableString formattedLabel = new SpannableString(getLabel());
-            formattedLabel.setSpan(new TextSpan(mode), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            formattedLabel = new SpannableString(getLabel());
+            formattedLabel.setSpan(new TextSpan(daymode, isChecked()), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             setText(formattedLabel);
+
         }else{
             setText(getLabel());
         }
@@ -145,6 +154,7 @@ public class DayView extends CheckedTextView {
             customBackground.setState(getDrawableState());
             customBackground.draw(canvas);
         }
+
         super.onDraw(canvas);
     }
 

@@ -19,7 +19,7 @@ public class AppCompact {
     ///兼容6.0以下设置 tint selector
     public static void setTint(Activity context,ImageView iv,int resId,int normalColorId,int pressedColorId){
         Drawable drawable = ContextCompat.getDrawable(context,resId);
-        int[] colors = new int[]{ContextCompat.getColor(context, normalColorId),ContextCompat.getColor(context,pressedColorId)};
+        int[] colors = new int[]{ContextCompat.getColor(context, pressedColorId),ContextCompat.getColor(context,normalColorId)};
         int[][] states = new int[2][];
         states[0] = new int[]{android.R.attr.state_pressed};
         states[1] = new int[]{};

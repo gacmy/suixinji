@@ -3,8 +3,10 @@ package com.example.gacmy.suixinji.myview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.gacmy.suixinji.R;
 
@@ -16,18 +18,23 @@ import java.util.List;
  */
 public class FlowLayout extends ViewGroup {
 
+    private List<CheckTextView> tv_list = new ArrayList<>();
+
     private Context mContext;
     private int usefulWidth; // the space of a line we can use(line's width minus the sum of left and right padding
     private int lineSpacing = 0; // the spacing between lines in flowlayout
     List<View> childList = new ArrayList();
     List<Integer> lineNumList = new ArrayList();
+    public OnClickListener imgCloseListener;
 
     public FlowLayout(Context context) {
         this(context, null);
+        init();
     }
 
     public FlowLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        init();
     }
 
     public FlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -38,6 +45,17 @@ public class FlowLayout extends ViewGroup {
         lineSpacing = mTypedArray.getDimensionPixelSize(
                 R.styleable.FlowLayout_lineSpacing, 0);
         mTypedArray.recycle();
+        init();
+    }
+    private void init(){
+//        imgCloseListener = new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                int index = indexOfChild(v);
+//                removeViewAt(index);
+//                list_editableTag.remove(v.getTag());
+//            }
+//        };
     }
 
     @Override
@@ -53,8 +71,12 @@ public class FlowLayout extends ViewGroup {
         int lineUsed = mPaddingLeft + mPaddingRight;
         int lineY = mPaddingTop;
         int lineHeight = 0;
+
+        //Log.e("gac","childCount:"+getChildCount());
         for (int i = 0; i < this.getChildCount(); i++) {
             View child = this.getChildAt(i);
+
+            //Log.e("gac", "childWidth1:" + child.getMeasuredWidth() + " childHeight1:" + child.getMeasuredHeight());
             if (child.getVisibility() == GONE) {
                 continue;
             }
@@ -66,12 +88,15 @@ public class FlowLayout extends ViewGroup {
                 MarginLayoutParams mlp = (MarginLayoutParams) childLp;
                 spaceWidth = mlp.leftMargin + mlp.rightMargin;
                 spaceHeight = mlp.topMargin + mlp.bottomMargin;
+                Log.e("gac", "marginLayout width:" + spaceWidth + " height:" + spaceHeight);
             } else {
+                Log.e("gac", "widthMeasureSpec:" + widthMeasureSpec + " heightMeasureSpec:" + heightMeasureSpec);
                 measureChild(child, widthMeasureSpec, heightMeasureSpec);
             }
 
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
+            Log.e("gac", "childWidth:" + childWidth + " childHeight:" + childHeight);
             spaceWidth += childWidth;
             spaceHeight += childHeight;
 
@@ -92,6 +117,75 @@ public class FlowLayout extends ViewGroup {
         );
     }
 
+//    private List<View> list_editableTag = new ArrayList<>();
+//    public void initTagEditable(String text){
+//        String[] tagText = text.split(":");
+//        for(int i = 0; i < tagText.length; i++){
+//            View view = LayoutInflater.from(mContext).inflate(R.layout.del_tag_view,null);
+//            view.setTag(i);
+//            ImageView iv = (ImageView)view.findViewById(R.id.iv_close);
+//            iv.setTag(i);
+//            TextView textView = (TextView)view.findViewById(R.id.tv_tag);
+//            textView.setText(tagText[i]);
+//            iv.setOnClickListener(imgCloseListener);
+//            addView(view);
+//            list_editableTag.add(view);
+//        }
+//
+//    }
+//
+//    public void addEditableTag(String text){
+//        View view = LayoutInflater.from(mContext).inflate(R.layout.del_tag_view,null);
+//        view.setTag(list_editableTag.size());
+//        ImageView iv = (ImageView)view.findViewById(R.id.iv_close);
+//        iv.setTag(list_editableTag.size());
+//        TextView textView = (TextView)view.findViewById(R.id.tv_tag);
+//        textView.setText(text);
+//        iv.setOnClickListener(imgCloseListener);
+//        list_editableTag.add(view);
+//    }
+
+    public void setCheckedTags(String text){
+        String[] tagText = text.split(":");
+        //设置已经选择的标签
+        for(int i = 0; i < tv_list.size();i++){
+            for(int j = 0; j < tagText.length; j++){
+                if (tv_list.get(i).getText().equals(tagText[j])){
+                    tv_list.get(i).setCheckedBg();
+                }
+            }
+        }
+    }
+    public void addTags(String text){
+        String[] tagText = text.split(":");
+        //添加新的标签
+        for(int i = 0; i < tagText.length; i++){
+            CheckTextView tv4 = new CheckTextView(mContext);
+            tv4.setText(tagText[i]);
+            tv4.setPadding(5, 5, 5, 5);
+            tv4.setTextSize(16);
+            tv4.setBackgroundResource(R.drawable.circle);
+            addTag(tv4);
+        }
+    }
+    public void addTag(CheckTextView tv){
+        addView(tv);
+        tv_list.add(tv);
+    }
+
+
+    public String getTagStr(){
+        if(tv_list.size() <= 0){
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < tv_list.size(); i++){
+            if(tv_list.get(i).isChecked){
+                sb.append(tv_list.get(i).getText()+":");
+            }
+        }
+        return sb.toString();
+    }
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int mPaddingLeft = getPaddingLeft();
@@ -124,7 +218,7 @@ public class FlowLayout extends ViewGroup {
             LayoutParams childLp = child.getLayoutParams();
             if (childLp instanceof MarginLayoutParams) {
                 MarginLayoutParams mlp = (MarginLayoutParams) childLp;
-                spaceWidth = mlp.leftMargin + mlp.rightMargin;
+                spaceWidth = mlp.leftMargin + mlp.rightMargin+5;
                 spaceHeight = mlp.topMargin + mlp.bottomMargin;
                 left = lineX + mlp.leftMargin;
                 top = lineY + mlp.topMargin;

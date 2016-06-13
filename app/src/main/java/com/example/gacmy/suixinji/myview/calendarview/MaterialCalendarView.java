@@ -129,6 +129,7 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
 
+    //设置固定的日期行数
     private int getWeekCountBasedOnMode() {
         int weekCount = 6;
 
@@ -140,7 +141,7 @@ public class MaterialCalendarView extends ViewGroup {
             weekCount = cal.get(Calendar.WEEK_OF_MONTH);
         }
        // Log.e("gac","weekCount:"+weekCount);
-        return weekCount;
+        return 5;
     }
 
     public int getFirstDayOfWeek() {
@@ -329,7 +330,7 @@ public class MaterialCalendarView extends ViewGroup {
         pager.setId(R.id.mcv_pager);
         pager.setOffscreenPageLimit(1);
         //调整总的行数
-        addView(pager, new LayoutParams(7 + DAY_NAMES_ROW));
+        addView(pager, new LayoutParams(8 + DAY_NAMES_ROW));
     }
 
 

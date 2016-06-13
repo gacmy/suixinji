@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.gacmy.suixinji.myview.shadowhelper.ShadowProperty;
 import com.example.gacmy.suixinji.myview.shadowhelper.ShadowViewHelper;
+import com.example.gacmy.suixinji.myview.toast.GacToast;
 
 /**
  * Created by gacmy on 2016/5/31.
@@ -45,6 +46,9 @@ public class ActivityUtils {
         return (int) (pxValue / scale + 0.5f);
     }
 
+    public static void toast(Activity context,int strId){
+        GacToast.makeText(context,context.getText(strId)).show();
+    }
     public static void setViewShaow(Activity context,TextView shadowView){
         ShadowViewHelper.bindShadowHelper(
                 new ShadowProperty()

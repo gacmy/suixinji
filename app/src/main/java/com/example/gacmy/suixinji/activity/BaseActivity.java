@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gacmy.suixinji.myview.toast.GacToast;
 
 
 /**
@@ -171,7 +172,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
     public void e(String str){
-        Log.e("gac",str);
+        Log.e("gac", str);
     }
-
+    protected void toast(String content){
+        GacToast.makeText(this, content).show();
+    }
 }

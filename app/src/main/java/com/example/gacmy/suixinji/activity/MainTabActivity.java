@@ -7,14 +7,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gacmy.suixinji.R;
 import com.example.gacmy.suixinji.adapter.MainTabViewPagerAdapter;
 import com.example.gacmy.suixinji.bean.MessageEvent;
+import com.example.gacmy.suixinji.bean.NoteEvent;
 import com.example.gacmy.suixinji.fragment.SXBJFragment;
 import com.example.gacmy.suixinji.fragment.WRBJFragment;
 import com.example.gacmy.suixinji.myview.indicator.PagerSlidingTabStrip;
@@ -24,6 +27,7 @@ import com.example.gacmy.suixinji.utils.bitmap.ImageCompress;
 import com.example.gacmy.suixinji.view.MainTabView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +45,7 @@ public class MainTabActivity extends BaseActivity implements MainTabView{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentViewWithToolbar(R.layout.activity_maintab, toolbar);
-
+        EventBus.getDefault().register(this);
     }
     public void initView(){
         vp = mGetView(R.id.viewpager);
@@ -60,6 +64,26 @@ public class MainTabActivity extends BaseActivity implements MainTabView{
     protected void onStop() {
         super.onStop();
         stopJumpingText();
+    }
+
+
+
+    /*接收WRBJFragment笔记信息数据 切换到笔记界面*/
+    @Subscribe
+    public void onEventMainThread(NoteEvent event) {
+         if(event != null){
+             vp.setCurrentItem(0,true);
+         }
+//        Log.e("gac", msg);
+//        if(!TextUtils.isEmpty(msg)){
+//            richTextEditor.insertImage(msg);
+//        }
+//        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     //初始化viewpager

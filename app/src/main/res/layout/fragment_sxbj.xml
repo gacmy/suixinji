@@ -4,7 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+        <com.example.gacmy.suixinji.myview.FlowLayout
+            android:id="@+id/fl_addtag"
+            android:layout_margin="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+        </com.example.gacmy.suixinji.myview.FlowLayout>
         <com.example.gacmy.suixinji.myview.richedittext.RichTextEditor
             android:id="@+id/richet"
             android:layout_width="match_parent"
@@ -63,6 +69,14 @@
                         android:layout_height="50dp"
                         android:layout_marginLeft="@dimen/margin20"
                         android:src="@drawable/ic_delete_white_24dp"
+                        />
+                    <ImageView
+                        android:id="@+id/iv_tag"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="@dimen/margin20"
+                        android:src="@drawable/ic_tag"
                         />
                 </LinearLayout>
 

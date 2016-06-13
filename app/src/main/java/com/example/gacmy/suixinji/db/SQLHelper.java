@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.gacmy.suixinji.bean.TagBean;
 import com.example.gacmy.suixinji.dao.NoteDao;
+import com.example.gacmy.suixinji.dao.TagDao;
 
 /**
  * Created by gac on 2016/6/2.
@@ -28,6 +30,24 @@ public class SQLHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         NoteDao.createTable(db);
+        TagDao.createTable(db);
+        TagBean tagBean1 = new TagBean();
+        tagBean1.setContent("生活");
+        TagBean tagBean2 = new TagBean();
+        tagBean2.setContent("学习");
+        TagBean tagBean3 = new TagBean();
+        tagBean3.setContent("工作");
+        TagBean tagBean4 = new TagBean();
+        tagBean4.setContent("爱好");
+        TagBean tagBean5 = new TagBean();
+        tagBean5.setContent("娱乐");
+        TagDao.insertBean(db, tagBean1);
+        TagDao.insertBean(db,tagBean2);
+        TagDao.insertBean(db,tagBean3);
+        TagDao.insertBean(db,tagBean4);
+        TagDao.insertBean(db,tagBean5);
+
+
     }
 
     @Override

@@ -15,4 +15,6 @@
     <color name="default_fill_color">#ffffff</color>
     <color name="calendartextcor0">#999999</color>
     <color name="kaoqin_gray">#E0DDDD</color>
+    <color name="dialogplus_card_shadow">#D4D4D4</color>
+    <color name="dialogplus_black_overlay">#60000000</color>
 </resources>

@@ -15,7 +15,14 @@ import com.example.gacmy.suixinji.R;
 import com.example.gacmy.suixinji.bean.MessageEvent;
 import com.example.gacmy.suixinji.bean.NoteBean;
 import com.example.gacmy.suixinji.dao.NoteDao;
+import com.example.gacmy.suixinji.dao.TagDao;
+import com.example.gacmy.suixinji.myview.CheckTextView;
+import com.example.gacmy.suixinji.myview.FlowLayout;
 import com.example.gacmy.suixinji.myview.circleimageview.CircleImageView;
+import com.example.gacmy.suixinji.myview.dialogplus.DialogPlus;
+import com.example.gacmy.suixinji.myview.dialogplus.DialogUtils;
+import com.example.gacmy.suixinji.myview.dialogplus.OnClickListener;
+import com.example.gacmy.suixinji.myview.dialogplus.ViewHolder;
 import com.example.gacmy.suixinji.myview.fabreveallayout.FABRevealLayout;
 import com.example.gacmy.suixinji.myview.fabreveallayout.OnRevealChangeListener;
 import com.example.gacmy.suixinji.myview.richedittext.RichTextEditor;
@@ -45,7 +52,10 @@ public class SXBJFragment extends BaseFragment{
     private ImageView civ_takephoto;
     private ImageView civ_save;
     private ImageView civ_clear;
+    private FlowLayout fl_addTag;
     private boolean init = true;
+    private ImageView iv_tag;
+    private String str_tagText;
     @Override
     public View getView(LayoutInflater inflater,ViewGroup container) {
         return inflater.inflate(R.layout.fragment_sxbj,container,false);
@@ -66,10 +76,14 @@ public class SXBJFragment extends BaseFragment{
         setTint(civ_clear,R.drawable.ic_delete_white_24dp);
         civ_takephoto = mGetViewSetOnClick(R.id.civ_takephoto,view);
         setTint(civ_takephoto,R.drawable.ic_camera_white_24dp);
+        iv_tag = mGetViewSetOnClick(R.id.iv_tag,view);
+        setTint(iv_tag,R.drawable.ic_tag);
+        fl_addTag = mGetView(R.id.fl_addtag,view);
+
     }
 
     private void setTint(ImageView iv,int resId){
-        AppCompact.setTint(getActivity(),iv,resId,R.color.colorPrimary,R.color.white);
+        AppCompact.setTint(getActivity(), iv, resId, R.color.white, R.color.colorPrimary);
     }
     //viewpager 里的fragment 可见时候用这个方法
     @Override
@@ -173,9 +187,64 @@ public class SXBJFragment extends BaseFragment{
             case R.id.civ_clear:
                 clearRichText();
                 break;
+            case R.id.iv_tag:
+                addTag();
+                break;
         }
     }
 
+    private void addTag(){
+        showTagDialog();
+
+    }
+
+
+    //显示标签的Dialog
+    private void showTagDialog(){
+        View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.flowlayout,null);
+        final ViewHolder holder = new ViewHolder(contentView);
+
+        final FlowLayout fl = (FlowLayout)contentView.findViewById(R.id.fl_tag);
+        String tagStr = new TagDao(getContext()).getTagstr();
+        //初始化标签内容
+        if(!TextUtils.isEmpty(tagStr)){
+            fl.addTags(tagStr);
+        }
+        //设置选中的标签内容
+        if(!TextUtils.isEmpty(str_tagText)){
+            fl.setCheckedTags(str_tagText);
+        }
+        DialogUtils.showOnlyContentDialog(getActivity(), holder, new OnClickListener() {
+            @Override
+            public void onClick(DialogPlus dialog, View view) {
+                if (view.getId() == R.id.dialog_ok) {
+                    dialog.dismiss();
+                    Log.e("gac", "string:" + fl.getTagStr());
+                    str_tagText = fl.getTagStr();
+                    addUserTag(str_tagText);
+                } else if (view.getId() == R.id.dialog_cancel) {
+                    dialog.dismiss();
+                }
+            }
+        });
+    }
+
+    //添加用户自己笔记的标签
+    private void addUserTag(String text){
+        fl_addTag.removeAllViews();
+        if(TextUtils.isEmpty(text)){
+            return;
+        }
+        String[] tagText = text.split(":");
+        for(int i = 0; i < tagText.length; i++) {
+            TextView tv4 = new TextView(getActivity());
+            tv4.setText(tagText[i]);
+            tv4.setPadding(5, 5, 5, 5);
+            tv4.setTextSize(16);
+            tv4.setBackgroundResource(R.drawable.textborder);
+            fl_addTag.addView(tv4);
+        }
+    }
     private void clearRichText(){
         richTextEditor.clearAllText();
         tv_notitle.setText(getString(R.string.nonote));
@@ -208,6 +277,7 @@ public class SXBJFragment extends BaseFragment{
         EventBus.getDefault().unregister(this);
     }
 
+    //接收MainTabActivity 发送的图片uri
     @Subscribe
     public void onEventMainThread(MessageEvent event) {
         String msg = event.getMsg();
