@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_marginTop="10dp"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/dialog_title"
+
         android:layout_gravity="left"
         android:background="@drawable/round_rect"
         android:layout_width="wrap_content"
@@ -14,4 +15,12 @@
         android:text="dialogtitle"
         android:textSize="18sp"
         />
-</LinearLayout>
+    <ImageView
+        android:id="@+id/dialog_tag_eidt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_edit_white_24dp"
+        android:layout_marginRight="10dp"
+        />
+</RelativeLayout>

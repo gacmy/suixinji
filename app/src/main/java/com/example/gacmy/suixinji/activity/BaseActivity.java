@@ -14,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gacmy.suixinji.R;
 import com.example.gacmy.suixinji.myview.toast.GacToast;
+import com.example.gacmy.suixinji.utils.AppCompact;
 
 
 /**
@@ -176,5 +178,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
     protected void toast(String content){
         GacToast.makeText(this, content).show();
+    }
+    public void setTint(ImageView iv,int resId){
+        AppCompact.setTint(this, iv, resId, R.color.white, R.color.colorPrimary);
     }
 }

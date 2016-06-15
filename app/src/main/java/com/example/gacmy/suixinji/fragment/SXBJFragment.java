@@ -1,5 +1,6 @@
 package com.example.gacmy.suixinji.fragment;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gacmy.suixinji.R;
+import com.example.gacmy.suixinji.activity.TagActivity;
 import com.example.gacmy.suixinji.bean.MessageEvent;
 import com.example.gacmy.suixinji.bean.NoteBean;
 import com.example.gacmy.suixinji.dao.NoteDao;
@@ -224,6 +226,8 @@ public class SXBJFragment extends BaseFragment{
                     addUserTag(str_tagText);
                 } else if (view.getId() == R.id.dialog_cancel) {
                     dialog.dismiss();
+                }else if(view.getId() == R.id.dialog_tag_eidt){
+                    startActivity(new Intent(getActivity(), TagActivity.class));
                 }
             }
         });

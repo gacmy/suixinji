@@ -4,6 +4,7 @@
     <string name="nonote">没有笔记</string>
     <string name="addtagfailed">添加标签失败,请重新添加</string>
     <string name="deltagfailed">删除标签失败</string>
+    <string name="edittag">编辑标签</string>
     <array name="mainTabTitles">
         <item>随心笔记</item>
         <item>往日笔记</item>

@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gacmy.suixinji.R;
+import com.example.gacmy.suixinji.utils.AppCompact;
 
 /**
  * Created by Administrator on 2016/6/6.
@@ -21,8 +23,9 @@ public class DialogUtils {
         View titleLayout = LayoutInflater.from(context).inflate(R.layout.dialog_header,null);
         TextView titleView = (TextView)titleLayout.findViewById(R.id.dialog_title);
         titleView.setText("请选择标签");
-
+        ImageView iv_tagedit = (ImageView)titleLayout.findViewById(R.id.dialog_tag_eidt);
         View footLayout = LayoutInflater.from(context).inflate(R.layout.dialog_footer,null);
+        AppCompact.setTint(context,iv_tagedit,R.drawable.ic_edit_white_24dp,R.color.green,R.color.gray_darker);
         TextView canceView = (TextView)footLayout.findViewById(R.id.dialog_cancel);
         TextView okView = (TextView)footLayout.findViewById(R.id.dialog_ok);
         SimpleAdapter adapter = new SimpleAdapter(context, false);

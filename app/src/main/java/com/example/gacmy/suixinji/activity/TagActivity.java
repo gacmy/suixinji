@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.gacmy.suixinji.R;
 import com.example.gacmy.suixinji.adapter.TagAdapter;
@@ -27,6 +29,8 @@ public class TagActivity extends BaseActivity {
     private RecyclerView rv_tag;
     private List<TagBean> list_tag;
     private TagAdapter adapter;
+    private TextView tv_title;
+    private ImageView iv_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,10 @@ public class TagActivity extends BaseActivity {
     @Override
     protected void initView() {
         toolbar = mGetView(R.id.backtoolbar);
+        tv_title = mGetView(R.id.tv_title);
+        tv_title.setText(getString(R.string.edittag));
+        iv_back = mGetViewSetOnClick(R.id.iv_back);
+        setTint(iv_back,R.drawable.ic_back);
         addtagView = mGetView(R.id.et_addtag);
         rv_tag = mGetView(R.id.rv_tag);
         addtagView.setGetTextListener(new EditAddView.GetTextListener() {
@@ -55,9 +63,7 @@ public class TagActivity extends BaseActivity {
         });
         initRecylerView();
     }
-    private void initToolbar(){
 
-    }
 
     private void initRecylerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -80,6 +86,10 @@ public class TagActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.iv_back:
+                finish();
+                break;
+        }
     }
 }
