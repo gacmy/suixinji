@@ -19,7 +19,7 @@ import java.util.List;
 public class FlowLayout extends ViewGroup {
 
     private List<CheckTextView> tv_list = new ArrayList<>();
-
+    public static String TAG = FlowLayout.class.getName();
     private Context mContext;
     private int usefulWidth; // the space of a line we can use(line's width minus the sum of left and right padding
     private int lineSpacing = 0; // the spacing between lines in flowlayout
@@ -58,8 +58,10 @@ public class FlowLayout extends ViewGroup {
 //        };
     }
 
+    public int i = 0;
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.e(TAG,"onMeasure:"+i++);
         int mPaddingLeft = getPaddingLeft();
         int mPaddingRight = getPaddingRight();
         int mPaddingTop = getPaddingTop();

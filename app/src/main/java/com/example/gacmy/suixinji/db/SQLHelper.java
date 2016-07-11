@@ -31,6 +31,11 @@ public class SQLHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         NoteDao.createTable(db);
         TagDao.createTable(db);
+        initData(db);
+    }
+
+    //初始化标签数据
+    private void initData(SQLiteDatabase db){
         TagBean tagBean1 = new TagBean();
         tagBean1.setContent("生活");
         TagBean tagBean2 = new TagBean();
@@ -46,8 +51,6 @@ public class SQLHelper extends SQLiteOpenHelper{
         TagDao.insertBean(db,tagBean3);
         TagDao.insertBean(db,tagBean4);
         TagDao.insertBean(db,tagBean5);
-
-
     }
 
     @Override
